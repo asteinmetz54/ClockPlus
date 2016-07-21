@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">Clock Plus</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="alarm">I\'m an alarm</string>
+    <string name="createalarm">Create New Alarm</string>
+    <string name="world_clock">I\'m a world clock</string>
+    <string name="timer">I\'m a timer</string>
+    <string name="stop_watch">I\'m a stopwatch</string>
+    <string name="alarmText">Wake up!</string>
+    <string name="alarmTime"></string>
+    <string name="monday">Mon</string>
+    <string name="tuesday">Tue</string>
+    <string name="wednesday">Wed</string>
+    <string name="thursday">Thu</string>
+    <string name="friday">Fri</string>
+    <string name="saturday">Sat</string>
+    <string name="sunday">Sun</string>
+    <string name="alarmNameSubText">Alarm Name</string>
+    <string name="alarmNameHint">Type Alarm Name Here</string>
+</resources>
