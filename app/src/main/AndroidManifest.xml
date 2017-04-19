@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.mycompany.clockplus">
+    <uses-sdk android:minSdkVersion="14" />
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
 
     <application
         android:allowBackup="true"
@@ -17,11 +19,15 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateAlarm"></activity>
+        <activity android:name=".CreateAlarm" />
 
-        <service android:name=".AlarmService"
-            android:enabled="true"/>
-        <receiver android:name=".AlarmReceiver"/>
+        <service
+            android:name=".AlarmService"
+            android:enabled="true" />
+
+        <receiver android:name=".AlarmReceiver" />
+
+        <activity android:name=".AddCalendarAlarm"></activity>
     </application>
 
 </manifest>

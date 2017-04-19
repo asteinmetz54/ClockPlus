@@ -6,5 +6,6 @@
     <color name="colorFabPressed">#ffebee</color>
     <color name="colorAccent">#f44336</color>
     <color name="colorText">#FAFAFA</color>
+    <color name="colorTextSecondary">#9E9E9E</color>
     <color name="colorTimePicker">#EEEEEE</color>
 </resources>
