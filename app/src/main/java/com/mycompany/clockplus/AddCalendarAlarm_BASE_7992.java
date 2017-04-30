@@ -107,10 +107,12 @@ public class AddCalendarAlarm extends AppCompatActivity implements LoaderManager
                         startActivityForResult(pickAccountIntent, PICK_ACCOUNT);
                         break;
                     case 1:
-
+<<<<<<< HEAD
+                        //Dialog dialog = new Dialog(this);
+                        //dialog.setContentView(R.layout.calendar_list);
+=======
                         break;
-
-
+>>>>>>> manualAlarm
                     default:
                         break;
                 }
