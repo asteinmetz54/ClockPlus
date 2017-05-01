@@ -1,4 +1,4 @@
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:fab="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -11,47 +11,44 @@
     <!-- TODO: Update blank fragment layout -->
 
 
+    <ExpandableListView
+        android:id="@+id/listview_alarm"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </ExpandableListView>
+
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/multiple_actions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        fab:fab_addButtonColorNormal="@color/colorAccent"
-        fab:fab_addButtonColorPressed="@color/colorFabPressed"
-        fab:fab_addButtonPlusIconColor="@color/colorText"
-        fab:fab_labelStyle="@style/menu_labels_style"
-        tools:layout_constraintBottom_creator="1"
-        app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_constraintLeft_creator="1"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginStart="32dp"
+        android:layout_gravity="bottom|center"
+        android:layout_marginBottom="8dp"
         android:layout_marginEnd="16dp"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        android:layout_marginBottom="8dp">
+        android:layout_marginStart="32dp">
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/calendar_alarm"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="addCalendarAlarm"
-            fab:fab_colorNormal="@color/colorAccent"
-            fab:fab_size="mini"
-            fab:fab_title="Calendar Alarm"
             app:fab_icon="@drawable/ic_date_range_white_24dp"
-            fab:fab_colorPressed="@color/colorFabPressed" />
+            fab:fab_colorNormal="@color/colorAccent"
+            fab:fab_colorPressed="@color/colorFabPressed"
+            fab:fab_size="mini"
+            fab:fab_title="Calendar Alarm" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton
             android:id="@+id/alarm_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:onClick="addAlarm"
-            fab:fab_size="mini"
-            fab:fab_colorNormal="@color/colorAccent"
             app:fab_icon="@drawable/ic_alarm_add_white_24dp"
-            fab:fab_title="Alarm"
-            fab:fab_colorPressed="@color/colorFabPressed" />
+            fab:fab_colorNormal="@color/colorAccent"
+            fab:fab_colorPressed="@color/colorFabPressed"
+            fab:fab_size="mini"
+            fab:fab_title="Alarm" />
 
     </com.getbase.floatingactionbutton.FloatingActionsMenu>
 
 
-</android.support.constraint.ConstraintLayout>
+</FrameLayout>

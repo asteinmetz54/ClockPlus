@@ -3,9 +3,13 @@ package com.mycompany.clockplus;
 import android.Manifest;
 import android.accounts.AccountManager;
 import android.annotation.TargetApi;
+import android.app.TimePickerDialog;
+import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -14,9 +18,19 @@ import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.SparseArray;
 import android.view.View;
+import android.widget.ExpandableListView;
+import android.widget.TimePicker;
 
 import com.google.android.gms.common.AccountPicker;
+
+import java.security.acl.Group;
+import java.sql.Time;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.HashMap;
+import java.util.List;
 
 
 public class MainActivity extends FragmentActivity {
@@ -25,6 +39,7 @@ public class MainActivity extends FragmentActivity {
     static final private int MY_PERMISSIONS_REQUEST_READ_CALENDAR = 1;
 
     private String accountName = null;
+
 
 
     ViewPager viewPager;
@@ -36,18 +51,44 @@ public class MainActivity extends FragmentActivity {
         viewPager = (ViewPager) findViewById(R.id.pager);
         SwipeAdapter sadapter = new SwipeAdapter(getSupportFragmentManager());
         viewPager.setAdapter(sadapter);
+
+
     }
 
 
     /**
-     * Launch manual alarm activity
+     * Bring up time picker dialog
      *
-     * @param view
+     * @param view  small Button from floating action menu
      */
     public void addAlarm(View view) {
-        Intent intent = new Intent(this, CreateAlarm.class);
-        startActivity(intent);
+        final Calendar calendar = Calendar.getInstance();
+        android.text.format.DateFormat dateFormat = new android.text.format.DateFormat();
+        boolean is24HourFormat= dateFormat.is24HourFormat(this);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int min = calendar.get(Calendar.MINUTE);
+        new TimePickerDialog(MainActivity.this, onTimeSetListener, hour, min, is24HourFormat).show();
     }
+
+
+    //Handle what to do with time picker info
+    TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
+
+            AlarmReaderDbHelper mDbHelper = new AlarmReaderDbHelper(getApplicationContext());
+            // Gets the data repository in write mode
+            SQLiteDatabase db = mDbHelper.getWritableDatabase();
+            // Create a new map of values, where column names are the keys
+            ContentValues values = new ContentValues();
+            values.put(AlarmContract.AlarmEntry.COLUMN_NAME_HOUR, hourOfDay);
+            values.put(AlarmContract.AlarmEntry.COLUMN_NAME_MINUTE, minute);
+
+            // Insert the new row, returning the primary key value of the new row
+            long newRowId = db.insert(AlarmContract.AlarmEntry.TABLE_NAME, null, values);
+
+        }
+    };
 
     /**
      * Launch AddCalendarAlarm while checking if proper permissions to read calendar are granted
@@ -133,5 +174,6 @@ public class MainActivity extends FragmentActivity {
     public void jumpToWorldClock(View view) {
         viewPager.setCurrentItem(3, true);
     }
+
 
 }

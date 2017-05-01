@@ -92,7 +92,7 @@ public class AddCalendarAlarm extends AppCompatActivity implements LoaderManager
         SimpleAdapter adapter = new SimpleAdapter(
                 this,
                 data,
-                R.layout.list_item_alarm,
+                R.layout.calendar_list,
                 new String[]{"First Line", "Second Line"},
                 new int[]{R.id.setting_alarm, R.id.setting_alarm_detail});
         ListView listView = (ListView) findViewById(R.id.listview_calendar_alarm);

@@ -1,14 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:clickable="true">
+    android:layout_width="match_parent"
+    android:layout_height="55dp"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    android:descendantFocusability="blocksDescendants">
 
     <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
+        android:id="@+id/setting_alarm"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
-        android:textSize="16sp"
-        android:padding="5dp"/>
+        android:fontFamily="sans-serif"
+        android:textColor="@color/colorText"
+        android:textSize="16sp" />
+    <TextView
+        android:id="@+id/setting_alarm_detail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/colorText"
+        android:textSize="16sp" />
+
 </LinearLayout>
