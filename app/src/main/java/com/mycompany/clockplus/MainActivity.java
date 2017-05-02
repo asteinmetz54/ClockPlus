@@ -1,36 +1,25 @@
 package com.mycompany.clockplus;
 
 import android.Manifest;
-import android.accounts.AccountManager;
 import android.annotation.TargetApi;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Build;
-import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
-import android.util.SparseArray;
 import android.view.View;
-import android.widget.ExpandableListView;
 import android.widget.TimePicker;
 
-import com.google.android.gms.common.AccountPicker;
+import com.mycompany.clockplus.database.AlarmContract;
+import com.mycompany.clockplus.database.AlarmReaderDbHelper;
 
-import java.security.acl.Group;
-import java.sql.Time;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
 
 
 public class MainActivity extends FragmentActivity {

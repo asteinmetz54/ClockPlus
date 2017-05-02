@@ -1,4 +1,4 @@
-package com.mycompany.clockplus;
+package com.mycompany.clockplus.database;
 
 import android.provider.BaseColumns;
 

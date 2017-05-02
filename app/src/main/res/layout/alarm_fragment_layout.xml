@@ -11,11 +11,11 @@
     <!-- TODO: Update blank fragment layout -->
 
 
-    <ExpandableListView
+    <ListView
         android:id="@+id/listview_alarm"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-    </ExpandableListView>
+    </ListView>
 
     <com.getbase.floatingactionbutton.FloatingActionsMenu
         android:id="@+id/multiple_actions"

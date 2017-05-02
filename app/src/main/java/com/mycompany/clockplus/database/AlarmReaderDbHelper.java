@@ -1,8 +1,10 @@
-package com.mycompany.clockplus;
+package com.mycompany.clockplus.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+
+import com.mycompany.clockplus.database.AlarmContract;
 
 /**
  * Created by Andrew on 4/29/2017.
