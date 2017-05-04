@@ -1,55 +1,62 @@
 package com.mycompany.clockplus;
 
-import android.app.Dialog;
+import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.support.v4.media.MediaMetadataCompat;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
-import static com.mycompany.clockplus.AlarmFragment.EXTRA_HOUR;
-import static com.mycompany.clockplus.AlarmFragment.EXTRA_ID;
-import static com.mycompany.clockplus.AlarmFragment.EXTRA_MIN;
+import com.mycompany.clockplus.database.AlarmContract;
+import com.mycompany.clockplus.database.AlarmReaderDbHelper;
 
+import java.io.Serializable;
 
-public class CreateAlarm extends AppCompatActivity {
+public class EditAlarm extends AppCompatActivity implements Serializable {
     int alarm_hour;
     int alarm_min;
     Button displayTimeDialog;
+    AlarmReaderDbHelper mDbHelper;
+    private Alarm alarm;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.create_alarm_layout);
+        setContentView(R.layout.edit_alarm_layout);
         Intent intent = getIntent();
-//        int hour = intent.getStringExtra(EXTRA_HOUR);
-//        int min = intent.getStringExtra(EXTRA_MIN);
-//        int id = intent.getStringExtra(EXTRA_ID);
+        final int position = intent.getIntExtra("position",0);
+        alarm = (Alarm) intent.getSerializableExtra("alarm");
+
         Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
         setSupportActionBar(myToolbar);
         displayTimeDialog = (Button) findViewById(R.id.alarmTime);
         displayTimeDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View v){
-                new TimePickerDialog(CreateAlarm.this, onTimeSetListener, alarm_hour, alarm_min, true).show();
+                new TimePickerDialog(EditAlarm.this, onTimeSetListener, alarm_hour, alarm_min, true).show();
             }
         }) ;
+        displayTimeDialog.setText(alarm.getTime());
 
         Button deleteAlarm = (Button) findViewById(R.id.deleteAlarm);
         deleteAlarm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("result", "delete");
+                returnIntent.putExtra("position", position);
+                setResult(Activity.RESULT_OK, returnIntent);
+                finish();
 
             }
         });
     }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

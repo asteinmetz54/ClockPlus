@@ -8,8 +8,9 @@
     <string name="timer">I\'m a timer</string>
     <string name="stop_watch">I\'m a stopwatch</string>
     <string name="alarmText">Wake up!</string>
-    <string name="alarmTime"></string>
+    <string name="alarmTime">Alarm Time</string>
     <string name="delete">Delete</string>
+    <string name="alarmSettings">Alarm Settings</string>
     <string name="settings">Settings</string>
     <string name="monday">Mon</string>
     <string name="tuesday">Tue</string>

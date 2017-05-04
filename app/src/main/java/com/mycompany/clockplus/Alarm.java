@@ -8,45 +8,70 @@
 package com.mycompany.clockplus;
 
 import android.content.Context;
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
+import com.mycompany.clockplus.MainActivity;
 
 /**
  * @author Andrew Steinmetz   mailto: arsteinm@asu.edu
  * @version April 28
  */
-public class Alarm {
+public class Alarm implements Serializable{
+    private static final long serialVersionUID = 1L;
     private String name;
     private  int hour, minute;
     private int id;
-    private Context context;
+    private int mdata;
+    boolean is24HourFormat;
 
     public Alarm(){}
 
-    public Alarm(Context context, int hour, int minute, String name, int id){
-        this.context = context;
+    public Alarm(int hour, int minute, String name, int id, boolean is24HourFormat){
+
         this.hour = hour;
         this.minute = minute;
         this.name = name;
         this.id = id;
+        this.is24HourFormat = is24HourFormat;
     }
 
     public String getTime(){
-        return Integer.toString(hour) + ":" + Integer.toString(minute);
-//        android.text.format.DateFormat dateFormat = new android.text.format.DateFormat();
-//        boolean is24HourFormat= dateFormat.is24HourFormat(context);
-//        if(is24HourFormat){
-//            return Integer.toString(hour) + ":" + Integer.toString(minute);
-//        } else{
-//            String amOrPm;
-//            String hourAmPm;
-//            if (hour > 12){
-//                hourAmPm = Integer.toString(hour -12);
-//                amOrPm = "p.m.";
-//            } else{
-//                hourAmPm = Integer.toString(hour);
-//                amOrPm = "a.m.";
-//            }
-//            return hourAmPm + ":" + minute + amOrPm;
-//        }
+        String time;
+        if(is24HourFormat){
+            if (hour < 10){
+                time = "0" + hour;
+            }else{
+                time = Integer.toString(hour);
+            }
+            time += ":";
+            if(minute < 10){
+                time += "0" + minute;
+            }else{
+                time += Integer.toString(minute);
+            }
+
+        }else {
+            if(hour > 12){
+                int hour12 = hour - 12;
+                time = Integer.toString(hour12);
+            }else {
+                time = Integer.toString(hour);
+            }
+            time +=":";
+            if(minute < 10){
+                time += "0" + minute;
+            }else{
+                time += minute;
+            }
+            if (hour <= 12){
+                time += "am";
+            } else {
+                time += "pm";
+            }
+        }
+        return time;
     }
 
     public int getHour() {
@@ -80,4 +105,6 @@ public class Alarm {
     public void setId(int id) {
         this.id = id;
     }
+
+
 }

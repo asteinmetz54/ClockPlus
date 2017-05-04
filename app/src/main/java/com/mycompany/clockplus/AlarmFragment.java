@@ -1,6 +1,7 @@
 package com.mycompany.clockplus;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,21 +16,21 @@ import android.widget.ListView;
 import com.mycompany.clockplus.database.AlarmContract;
 import com.mycompany.clockplus.database.AlarmReaderDbHelper;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AlarmFragment extends Fragment {
-    public static final String EXTRA_HOUR = "com.mycompany.clockplus.HOUR";
-    public static final String EXTRA_MIN = "com.mycompany.clockplus.MIN";
-    public static final String EXTRA_NAME = "com.mycompany.clockplus.NAME";
-    public static final String EXTRA_ID = "com.mycompany.clockplus.ID";
+public class AlarmFragment extends Fragment implements Serializable{
+
+    static final int EDIT_ALARM = 1;
     private ArrayList<Alarm> alarmList;
 
     private ListView listView;
 
     private AlarmAdapter alarmAdapter;
+    AlarmReaderDbHelper mDbHelper;
 
     public AlarmFragment() {
         // Required empty public constructor
@@ -46,15 +47,13 @@ public class AlarmFragment extends Fragment {
         listView = (ListView)view.findViewById(R.id.listview_alarm);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Alarm alarm = (Alarm) adapterView.getItemAtPosition(i);
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                Alarm alarm = (Alarm) alarmList.get(position);
 
-                Intent intent = new Intent(getContext(), CreateAlarm.class);
-                intent.putExtra(EXTRA_HOUR, alarm.getHour());
-                intent.putExtra(EXTRA_MIN, alarm.getMinute());
-                intent.putExtra(EXTRA_NAME, alarm.getName());
-                intent.putExtra(EXTRA_ID, alarm.getId());
-                startActivity(intent);
+                Intent intent = new Intent(getContext(), EditAlarm.class);
+                intent.putExtra("position", position );
+                intent.putExtra("alarm", alarm);
+                startActivityForResult(intent,EDIT_ALARM);
             }
         });
         alarmAdapter = new AlarmAdapter(getContext(), alarmList);
@@ -62,8 +61,39 @@ public class AlarmFragment extends Fragment {
         return view;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+
+        if (requestCode == EDIT_ALARM) {
+            if(resultCode == Activity.RESULT_OK){
+                String result = data.getStringExtra("result");
+                if(result.equals("delete")){
+                    int position = data.getIntExtra("position", 0);
+                    mDbHelper = new AlarmReaderDbHelper(getContext());
+                    // Gets the data repository in write mode
+                    SQLiteDatabase db = mDbHelper.getWritableDatabase();
+                    String selection = AlarmContract.AlarmEntry._ID + " LIKE ?";
+                    String[] selectionArgs = {Integer.toString(alarmList.get(position).getId())};
+                    db.delete(AlarmContract.AlarmEntry.TABLE_NAME, selection, selectionArgs);
+                    alarmList.remove(position);
+                    alarmAdapter.notifyDataSetChanged();
+                }
+            }
+            if (resultCode == Activity.RESULT_CANCELED) {
+                //Write your code if there's no result
+            }
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        mDbHelper.close();
+        super.onDestroy();
+    }
+
+
     private void loadAlarmData() {
-        AlarmReaderDbHelper mDbHelper = new AlarmReaderDbHelper(getContext());
+        mDbHelper = new AlarmReaderDbHelper(getContext());
         // Gets the data repository in write mode
         SQLiteDatabase db = mDbHelper.getWritableDatabase();
 
@@ -90,12 +120,14 @@ public class AlarmFragment extends Fragment {
 
         int hour, minute, id;
         String name;
+        android.text.format.DateFormat dateFormat = new android.text.format.DateFormat();
+        boolean is24HourFormat= dateFormat.is24HourFormat(getContext());
         while (cursor.moveToNext()) {
             id = Integer.parseInt(cursor.getString(0));
             name = cursor.getString(1);
             minute = Integer.parseInt(cursor.getString(2));
             hour = Integer.parseInt(cursor.getString(3));
-            Alarm alarm = new Alarm(getContext(), hour, minute, name, id);
+            Alarm alarm = new Alarm(hour, minute, name, id,is24HourFormat);
             alarmList.add(alarm);
         }
 

@@ -19,7 +19,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CreateAlarm" />
+        <activity android:name=".EditAlarm"
+            android:label="@string/alarmSettings">
+            </activity>
 
         <service
             android:name=".AlarmService"

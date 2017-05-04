@@ -28,6 +28,7 @@ public class MainActivity extends FragmentActivity {
     static final private int MY_PERMISSIONS_REQUEST_READ_CALENDAR = 1;
 
     private String accountName = null;
+    private AlarmReaderDbHelper mDbHelper;
 
 
 
@@ -59,13 +60,21 @@ public class MainActivity extends FragmentActivity {
         new TimePickerDialog(MainActivity.this, onTimeSetListener, hour, min, is24HourFormat).show();
     }
 
+    @Override
+    protected void onDestroy() {
+        if(mDbHelper!=null)
+        mDbHelper.close();
+        super.onDestroy();
+    }
+
+
 
     //Handle what to do with time picker info
     TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
         @Override
         public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
 
-            AlarmReaderDbHelper mDbHelper = new AlarmReaderDbHelper(getApplicationContext());
+            mDbHelper = new AlarmReaderDbHelper(getApplicationContext());
             // Gets the data repository in write mode
             SQLiteDatabase db = mDbHelper.getWritableDatabase();
             // Create a new map of values, where column names are the keys
