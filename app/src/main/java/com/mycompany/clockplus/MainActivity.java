@@ -46,19 +46,7 @@ public class MainActivity extends FragmentActivity {
     }
 
 
-    /**
-     * Bring up time picker dialog
-     *
-     * @param view  small Button from floating action menu
-     */
-    public void addAlarm(View view) {
-        final Calendar calendar = Calendar.getInstance();
-        android.text.format.DateFormat dateFormat = new android.text.format.DateFormat();
-        boolean is24HourFormat= dateFormat.is24HourFormat(this);
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int min = calendar.get(Calendar.MINUTE);
-        new TimePickerDialog(MainActivity.this, onTimeSetListener, hour, min, is24HourFormat).show();
-    }
+
 
     @Override
     protected void onDestroy() {
@@ -69,24 +57,7 @@ public class MainActivity extends FragmentActivity {
 
 
 
-    //Handle what to do with time picker info
-    TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
-        @Override
-        public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
 
-            mDbHelper = new AlarmReaderDbHelper(getApplicationContext());
-            // Gets the data repository in write mode
-            SQLiteDatabase db = mDbHelper.getWritableDatabase();
-            // Create a new map of values, where column names are the keys
-            ContentValues values = new ContentValues();
-            values.put(AlarmContract.AlarmEntry.COLUMN_NAME_HOUR, hourOfDay);
-            values.put(AlarmContract.AlarmEntry.COLUMN_NAME_MINUTE, minute);
-
-            // Insert the new row, returning the primary key value of the new row
-            long newRowId = db.insert(AlarmContract.AlarmEntry.TABLE_NAME, null, values);
-
-        }
-    };
 
     /**
      * Launch AddCalendarAlarm while checking if proper permissions to read calendar are granted

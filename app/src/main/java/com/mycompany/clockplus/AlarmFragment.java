@@ -2,6 +2,8 @@ package com.mycompany.clockplus;
 
 
 import android.app.Activity;
+import android.app.TimePickerDialog;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,12 +14,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TimePicker;
 
 import com.mycompany.clockplus.database.AlarmContract;
 import com.mycompany.clockplus.database.AlarmReaderDbHelper;
+import com.getbase.floatingactionbutton.FloatingActionButton;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -58,8 +63,46 @@ public class AlarmFragment extends Fragment implements Serializable{
         });
         alarmAdapter = new AlarmAdapter(getContext(), alarmList);
         listView.setAdapter(alarmAdapter);
+
+        FloatingActionButton newAlarmButton = (FloatingActionButton) view.findViewById(R.id.alarm_button);
+        newAlarmButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                final Calendar calendar = Calendar.getInstance();
+                android.text.format.DateFormat dateFormat = new android.text.format.DateFormat();
+                boolean is24HourFormat= dateFormat.is24HourFormat(getContext());
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                int min = calendar.get(Calendar.MINUTE);
+                new TimePickerDialog(getContext(), onTimeSetListener, hour, min, is24HourFormat).show();
+            }
+        });
         return view;
     }
+    
+
+    //Handle what to do with time picker info
+    TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
+        @Override
+        public void onTimeSet(TimePicker timePicker, int hourOfDay, int minute) {
+
+            mDbHelper = new AlarmReaderDbHelper(getContext());
+            // Gets the data repository in write mode
+            SQLiteDatabase db = mDbHelper.getWritableDatabase();
+            // Create a new map of values, where column names are the keys
+            ContentValues values = new ContentValues();
+            values.put(AlarmContract.AlarmEntry.COLUMN_NAME_HOUR, hourOfDay);
+            values.put(AlarmContract.AlarmEntry.COLUMN_NAME_MINUTE, minute);
+
+            // Insert the new row, returning the primary key value of the new row
+            long newRowId = db.insert(AlarmContract.AlarmEntry.TABLE_NAME, null, values);
+            Alarm newAlarm = new Alarm();
+            newAlarm.setHour(hourOfDay);
+            newAlarm.setMinute(minute);
+            alarmList.add(newAlarm);
+            alarmAdapter.notifyDataSetChanged();
+
+        }
+    };
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
