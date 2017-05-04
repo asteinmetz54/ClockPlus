@@ -78,7 +78,7 @@ public class AlarmFragment extends Fragment implements Serializable{
         });
         return view;
     }
-    
+
 
     //Handle what to do with time picker info
     TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener() {
@@ -110,8 +110,8 @@ public class AlarmFragment extends Fragment implements Serializable{
         if (requestCode == EDIT_ALARM) {
             if(resultCode == Activity.RESULT_OK){
                 String result = data.getStringExtra("result");
+                int position = data.getIntExtra("position", 0);
                 if(result.equals("delete")){
-                    int position = data.getIntExtra("position", 0);
                     mDbHelper = new AlarmReaderDbHelper(getContext());
                     // Gets the data repository in write mode
                     SQLiteDatabase db = mDbHelper.getWritableDatabase();
@@ -120,6 +120,26 @@ public class AlarmFragment extends Fragment implements Serializable{
                     db.delete(AlarmContract.AlarmEntry.TABLE_NAME, selection, selectionArgs);
                     alarmList.remove(position);
                     alarmAdapter.notifyDataSetChanged();
+                }else if (result.equals("save")){
+                    Alarm alarm = (Alarm) data.getSerializableExtra("alarm");
+                    mDbHelper = new AlarmReaderDbHelper(getContext());
+                    SQLiteDatabase db = mDbHelper.getReadableDatabase();
+                    ContentValues values = new ContentValues();
+                    values.put(AlarmContract.AlarmEntry.COLUMN_NAME_HOUR, alarm.getHour());
+                    values.put(AlarmContract.AlarmEntry.COLUMN_NAME_MINUTE, alarm.getMinute());
+                    values.put(AlarmContract.AlarmEntry.COLUMN_NAME_NAME, alarm.getName());
+
+                    String selection = AlarmContract.AlarmEntry._ID + " LIKE ?";
+                    String[] selectionArgs = {Integer.toString(alarm.getId())};
+
+                    int count = db.update(
+                            AlarmContract.AlarmEntry.TABLE_NAME,
+                            values,
+                            selection,
+                            selectionArgs);
+                    alarmList.set(position, alarm);
+                    alarmAdapter.notifyDataSetChanged();
+
                 }
             }
             if (resultCode == Activity.RESULT_CANCELED) {

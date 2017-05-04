@@ -57,7 +57,9 @@ public class Alarm implements Serializable{
                 int hour12 = hour - 12;
                 time = Integer.toString(hour12);
             }else {
-                time = Integer.toString(hour);
+                if (hour == 0){
+                    time = "12";
+                }else time = Integer.toString(hour);
             }
             time +=":";
             if(minute < 10){

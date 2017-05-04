@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -32,16 +34,29 @@ public class EditAlarm extends AppCompatActivity implements Serializable {
         final int position = intent.getIntExtra("position",0);
         alarm = (Alarm) intent.getSerializableExtra("alarm");
 
-        Toolbar myToolbar = (Toolbar) findViewById(R.id.my_toolbar);
-        setSupportActionBar(myToolbar);
         displayTimeDialog = (Button) findViewById(R.id.alarmTime);
         displayTimeDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View v){
-                new TimePickerDialog(EditAlarm.this, onTimeSetListener, alarm_hour, alarm_min, true).show();
+                android.text.format.DateFormat dateFormat = new android.text.format.DateFormat();
+                boolean is24HourFormat= dateFormat.is24HourFormat(getApplicationContext());
+                new TimePickerDialog(EditAlarm.this, onTimeSetListener, alarm.getHour(), alarm.getMinute(), is24HourFormat).show();
             }
         }) ;
         displayTimeDialog.setText(alarm.getTime());
+
+        Button saveAlarm = (Button) findViewById(R.id.saveAlarm);
+        saveAlarm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("result", "save");
+                returnIntent.putExtra("position", position);
+                returnIntent.putExtra("alarm", alarm);
+                setResult(Activity.RESULT_OK, returnIntent);
+                finish();
+            }
+        });
 
         Button deleteAlarm = (Button) findViewById(R.id.deleteAlarm);
         deleteAlarm.setOnClickListener(new View.OnClickListener() {
@@ -57,34 +72,42 @@ public class EditAlarm extends AppCompatActivity implements Serializable {
         });
     }
 
+  /*
+     * One way to create Aciton Bar Buttons is to use xml menu specification. Create the file:
+     * res/menu/main_activity_actions.xml to include contents as in this project.
+     * reference to any images for the action bar should be created by right clicking on res folder
+     * in the project and creating a new image asset. Be sure to specify Action Bar & Tab Icon
+     */
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu){
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.edit_alarm_delete, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    /*
+     * Implement onOptionsItemSelected(MenuItem item){} to handle clicks of buttons that are
+     * in the action bar.
+     */
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.action_settings:
-                // User chose the "Settings" item, show the app settings UI...
-                return true;
-
             case R.id.action_delete:
-                // User chose the "Favorite" action, mark the current item
-                // as a favorite...
                 return true;
+            case R.id.action_settings:
 
+                return true;
             default:
-                // If we got here, the user's action was not recognized.
-                // Invoke the superclass to handle it.
                 return super.onOptionsItemSelected(item);
-
         }
     }
     TimePickerDialog.OnTimeSetListener onTimeSetListener = new TimePickerDialog.OnTimeSetListener(){
         @Override
         public void onTimeSet(TimePicker view, int hourOfDay, int minute){
-            if (minute>9) {
-                displayTimeDialog.setText(hourOfDay + ":" + minute);
-            }else{
-                displayTimeDialog.setText(hourOfDay+ ":0" + minute);
-            }
+            alarm.setHour(hourOfDay);
+            alarm.setMinute(minute);
+            displayTimeDialog.setText(alarm.getTime());
         }
     };
 }
