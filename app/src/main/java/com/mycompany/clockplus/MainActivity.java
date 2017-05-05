@@ -45,19 +45,12 @@ public class MainActivity extends FragmentActivity {
 
     }
 
-
-
-
     @Override
     protected void onDestroy() {
         if(mDbHelper!=null)
         mDbHelper.close();
         super.onDestroy();
     }
-
-
-
-
 
     /**
      * Launch AddCalendarAlarm while checking if proper permissions to read calendar are granted
@@ -89,9 +82,7 @@ public class MainActivity extends FragmentActivity {
 
         }
     }
-
-
-
+    
     private void showMessageOKCancel(String message, DialogInterface.OnClickListener okListener) {
         new AlertDialog.Builder(MainActivity.this)
                 .setMessage(message)

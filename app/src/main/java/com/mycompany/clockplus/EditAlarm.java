@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.mycompany.clockplus.database.AlarmContract;
@@ -22,19 +23,20 @@ import java.io.Serializable;
 public class EditAlarm extends AppCompatActivity implements Serializable {
     int alarm_hour;
     int alarm_min;
-    Button displayTimeDialog;
+    TextView displayTimeDialog;
     AlarmReaderDbHelper mDbHelper;
     private Alarm alarm;
+    int position;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.edit_alarm_layout);
         Intent intent = getIntent();
-        final int position = intent.getIntExtra("position",0);
+        position = intent.getIntExtra("position",0);
         alarm = (Alarm) intent.getSerializableExtra("alarm");
 
-        displayTimeDialog = (Button) findViewById(R.id.alarmTime);
+        displayTimeDialog = (TextView) findViewById(R.id.alarmTime);
         displayTimeDialog.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick (View v){
@@ -55,19 +57,6 @@ public class EditAlarm extends AppCompatActivity implements Serializable {
                 returnIntent.putExtra("alarm", alarm);
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
-            }
-        });
-
-        Button deleteAlarm = (Button) findViewById(R.id.deleteAlarm);
-        deleteAlarm.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra("result", "delete");
-                returnIntent.putExtra("position", position);
-                setResult(Activity.RESULT_OK, returnIntent);
-                finish();
-
             }
         });
     }
@@ -94,9 +83,11 @@ public class EditAlarm extends AppCompatActivity implements Serializable {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_delete:
-                return true;
-            case R.id.action_settings:
-
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("result", "delete");
+                returnIntent.putExtra("position", position);
+                setResult(Activity.RESULT_OK, returnIntent);
+                finish();
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
