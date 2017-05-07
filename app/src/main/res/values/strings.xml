@@ -2,8 +2,8 @@
     <string name="app_name">Clock Plus</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="createalarm">Create New Alarm</string>
-    <string name="calendar_alarm">Create New Calendar Alarm</string>
+    <string name="createalarm">Manual Alarm</string>
+    <string name="calendar_alarm">Calendar Alarm</string>
     <string name="world_clock">I\'m a world clock</string>
     <string name="timer">I\'m a timer</string>
     <string name="stop_watch">I\'m a stopwatch</string>

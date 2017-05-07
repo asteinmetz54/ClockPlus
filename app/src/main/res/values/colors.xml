@@ -10,4 +10,5 @@
     <color name="colorTimePicker">#EEEEEE</color>
     <color name="colorDayOn">#bdbdbd</color>
     <color name="colorDayOff">#616161</color>
+    <color name="colorFloatingActionMenu">#90a4ae</color>
 </resources>
