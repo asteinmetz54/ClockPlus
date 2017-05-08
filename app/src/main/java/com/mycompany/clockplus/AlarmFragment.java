@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,8 +19,6 @@ import android.widget.TimePicker;
 
 import com.mycompany.clockplus.database.AlarmContract;
 import com.mycompany.clockplus.database.AlarmReaderDbHelper;
-import com.getbase.floatingactionbutton.FloatingActionButton;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
