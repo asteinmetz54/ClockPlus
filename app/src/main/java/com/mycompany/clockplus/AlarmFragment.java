@@ -164,6 +164,10 @@ public class AlarmFragment extends Fragment{
     };
 
     @Override
+    /**
+     *
+     * @param   requestCode     arbitrary id set at top of function, unique
+     */
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
         if (requestCode == EDIT_ALARM) {
