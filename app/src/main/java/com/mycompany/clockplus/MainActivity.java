@@ -13,6 +13,7 @@ import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
 
@@ -23,6 +24,8 @@ import java.util.Calendar;
 
 
 public class MainActivity extends FragmentActivity {
+
+    public static final String TAG = "MainActivity";
 
     //request codes
     static final private int MY_PERMISSIONS_REQUEST_READ_CALENDAR = 1;
@@ -134,6 +137,7 @@ public class MainActivity extends FragmentActivity {
     public void jumpToWorldClock(View view) {
         viewPager.setCurrentItem(3, true);
     }
+
 
 
 }

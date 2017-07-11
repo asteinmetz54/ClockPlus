@@ -8,19 +8,16 @@
 
 package com.mycompany.clockplus;
 
+import android.support.v7.widget.RecyclerView;
+
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageButton;
 
 import android.widget.TextView;
-import android.widget.Toast;
-
-import com.mycompany.clockplus.Alarm;
-import com.mycompany.clockplus.R;
 
 import java.util.ArrayList;
 
@@ -29,25 +26,62 @@ import java.util.ArrayList;
  * @version April 28
  */
 
-public class AlarmAdapter extends ArrayAdapter<Alarm>  {
+public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder>  {
+    private static final String TAG = "CustomAdapter";
+    private final ArrayList<Alarm> alarmArrayList;
 
-    public  AlarmAdapter(Context context, ArrayList<Alarm> alarms){
-        super(context, 0, alarms);
+    public class ViewHolder extends RecyclerView.ViewHolder{
+        private final TextView time;
+        private final TextView name;
+
+        public ViewHolder(View view){
+            super(view);
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Log.d(TAG, "Element " + getAdapterPosition() + " clicked.");
+                }
+            });
+            time = (TextView) view  .findViewById(R.id.listAlarmTime);
+            name = (TextView) view.findViewById(R.id.listAlarmName);
+        }
+
+        public TextView getTime(){
+            return time;
+        }
+
+        public TextView getName(){
+            return name;
+        }
+
+    }
+
+    public  AlarmAdapter(ArrayList<Alarm> alarms){
+        alarmArrayList = alarms;
+    }
+
+    // Create new views (invoked by the layout manager)
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+        View v = LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.list_item_alarm, viewGroup, false);
+
+        return new ViewHolder(v);
+    }
+
+    // Replace the contents of a view (invoked by the layout manager)
+    @Override
+    public void onBindViewHolder(ViewHolder holder, int position) {
+        Log.d(TAG, "Element " + position + " set.");
+        Alarm alarm = alarmArrayList.get(position);
+        // Get element from your dataset at this position and replace the contents of the view
+        // with that element
+        holder.getTime().setText(alarm.getTime());
+        holder.getName().setText(alarm.getName());
     }
 
     @Override
-    public View getView(final int position, View convertView, final ViewGroup parent){
-        final Alarm alarm = getItem(position);
-        if(convertView == null){
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.list_item_alarm, parent, false);
-        }
-
-
-        TextView time = (TextView) convertView.findViewById(R.id.listAlarmTime);
-        TextView name = (TextView) convertView.findViewById(R.id.listAlarmName);
-
-        time.setText(alarm.getTime());
-        name.setText(alarm.getName());
-        return convertView;
+    public int getItemCount() {
+        return alarmArrayList.size();
     }
 }

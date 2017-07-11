@@ -7,12 +7,7 @@
 
 package com.mycompany.clockplus;
 
-import android.content.Context;
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.io.Serializable;
-import com.mycompany.clockplus.MainActivity;
 
 /**
  * @author Andrew Steinmetz   mailto: arsteinm@asu.edu
@@ -22,11 +17,20 @@ public class Alarm implements Serializable{
     private static final long serialVersionUID = 1L;
     private String name;
     private  int hour, minute;
+    private boolean isOn;
     private int id;
     private int mdata;
     boolean is24HourFormat;
 
     public Alarm(){}
+
+    public boolean isOn() {
+        return isOn;
+    }
+
+    public void setOn(boolean on) {
+        this.isOn = on;
+    }
 
     public Alarm(int hour, int minute, String name, int id, boolean is24HourFormat){
 
@@ -35,6 +39,7 @@ public class Alarm implements Serializable{
         this.name = name;
         this.id = id;
         this.is24HourFormat = is24HourFormat;
+        isOn = true;
     }
 
     public String getTime(){

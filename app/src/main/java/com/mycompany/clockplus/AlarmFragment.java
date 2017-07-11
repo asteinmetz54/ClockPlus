@@ -9,11 +9,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ListView;
 import android.widget.TimePicker;
 
 import com.mycompany.clockplus.database.AlarmContract;
@@ -27,12 +29,23 @@ import java.util.Calendar;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class AlarmFragment extends Fragment implements Serializable{
+public class AlarmFragment extends Fragment{
 
+
+    private static final String TAG = "RecyclerViewFragment";
+    private static final String KEY_LAYOUT_MANAGER = "layoutManager";
+    protected LayoutManagerType mCurrentLayoutManagerType;
+    protected RecyclerView.LayoutManager mLayoutManager;
+    private static final int SPAN_COUNT = 2;
     static final int EDIT_ALARM = 1;
     private ArrayList<Alarm> alarmList;
 
-    private ListView listView;
+    private RecyclerView recyclerView;
+
+    private enum LayoutManagerType {
+        GRID_LAYOUT_MANAGER,
+        LINEAR_LAYOUT_MANAGER
+    }
 
     private AlarmAdapter alarmAdapter;
     AlarmReaderDbHelper mDbHelper;
@@ -45,26 +58,40 @@ public class AlarmFragment extends Fragment implements Serializable{
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.alarm_fragment_layout, container, false);
+        View rootView = inflater.inflate(R.layout.alarm_fragment_layout, container, false);
+        rootView.setTag(TAG);
         // Inflate the layout for this fragment
         alarmList = new ArrayList<>();
         loadAlarmData();
-        listView = (ListView)view.findViewById(R.id.listview_alarm);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                Alarm alarm = (Alarm) alarmList.get(position);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.recyclerview_alarm);
+        // LinearLayoutManager is used here, this will layout the elements in a similar fashion
+        // to the way ListView would layout elements. The RecyclerView.LayoutManager defines how
+        // elements are laid out.
+        mLayoutManager = new LinearLayoutManager(getActivity());
 
-                Intent intent = new Intent(getContext(), EditAlarm.class);
-                intent.putExtra("position", position );
-                intent.putExtra("alarm", alarm);
-                startActivityForResult(intent,EDIT_ALARM);
-            }
-        });
-        alarmAdapter = new AlarmAdapter(getContext(), alarmList);
-        listView.setAdapter(alarmAdapter);
+        mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
 
-        FloatingActionButton newAlarmButton = (FloatingActionButton) view.findViewById(R.id.alarm_button);
+        if (savedInstanceState != null) {
+            // Restore saved layout manager type.
+            mCurrentLayoutManagerType = (LayoutManagerType) savedInstanceState
+                    .getSerializable(KEY_LAYOUT_MANAGER);
+        }
+        setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
+//        recyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+//            @Override
+//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+//                Alarm alarm = (Alarm) alarmList.get(position);
+//
+//                Intent intent = new Intent(getContext(), EditAlarm.class);
+//                intent.putExtra("position", position );
+//                intent.putExtra("alarm", alarm);
+//                startActivityForResult(intent,EDIT_ALARM);
+//            }
+//        });
+        alarmAdapter = new AlarmAdapter(alarmList);
+        recyclerView.setAdapter(alarmAdapter);
+
+        FloatingActionButton newAlarmButton = (FloatingActionButton) rootView.findViewById(R.id.alarm_button);
         newAlarmButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -76,7 +103,39 @@ public class AlarmFragment extends Fragment implements Serializable{
                 new TimePickerDialog(getContext(), onTimeSetListener, hour, min, is24HourFormat).show();
             }
         });
-        return view;
+        return rootView;
+    }
+
+    /**
+     * Set RecyclerView's LayoutManager to the one given.
+     *
+     * @param layoutManagerType Type of layout manager to switch to.
+     */
+    public void setRecyclerViewLayoutManager(LayoutManagerType layoutManagerType) {
+        int scrollPosition = 0;
+
+        // If a layout manager has already been set, get current scroll position.
+        if (recyclerView.getLayoutManager() != null) {
+            scrollPosition = ((LinearLayoutManager) recyclerView.getLayoutManager())
+                    .findFirstCompletelyVisibleItemPosition();
+        }
+
+        switch (layoutManagerType) {
+            case GRID_LAYOUT_MANAGER:
+                mLayoutManager = new GridLayoutManager(getActivity(), SPAN_COUNT);
+                mCurrentLayoutManagerType = LayoutManagerType.GRID_LAYOUT_MANAGER;
+                break;
+            case LINEAR_LAYOUT_MANAGER:
+                mLayoutManager = new LinearLayoutManager(getActivity());
+                mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
+                break;
+            default:
+                mLayoutManager = new LinearLayoutManager(getActivity());
+                mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
+        }
+
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.scrollToPosition(scrollPosition);
     }
 
 
