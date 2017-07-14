@@ -17,6 +17,7 @@ public class AlarmContract {
         public static final String COLUMN_NAME_NAME = "name";
         public static final String COLUMN_NAME_MINUTE = "minute";
         public static final String COLUMN_NAME_HOUR = "hour";
+        public static final String COLUMN_NAME_ENABLED = "enabled";
     }
 
 

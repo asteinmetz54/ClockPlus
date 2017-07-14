@@ -19,6 +19,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 
+import android.widget.Switch;
 import android.widget.TextView;
 
 import com.mycompany.clockplus.databinding.ListItemAlarmBinding;
@@ -35,14 +36,27 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
     private static final String TAG = "CustomAdapter";
     private final ArrayList<Alarm> alarmArrayList;
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public static class ViewHolder extends RecyclerView.ViewHolder{
         private ListItemAlarmBinding binding;
         public ViewHolder(ListItemAlarmBinding itemView){
             super(itemView.getRoot());
             binding = itemView;
-        }
+            binding.listAlarmSwitch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
 
+                }
+            });
+            binding.listItemAlarm.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    
+                }
+            });
+
+        }
     }
+
 
     public  AlarmAdapter(ArrayList<Alarm> alarms){
         alarmArrayList = alarms;
@@ -50,12 +64,13 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.ViewHolder> 
 
     // Create new views (invoked by the layout manager)
     @Override
-    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
+    public ViewHolder onCreateViewHolder(final ViewGroup viewGroup, int viewType) {
         ListItemAlarmBinding binding = DataBindingUtil.inflate(
                 LayoutInflater.from(viewGroup.getContext()),
                 R.layout.list_item_alarm,
                 viewGroup,
                 false);
+
 
         return new ViewHolder(binding);
     }

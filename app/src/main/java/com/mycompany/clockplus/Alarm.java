@@ -27,14 +27,6 @@ public class Alarm extends BaseObservable implements Serializable {
 
     public Alarm(){}
 
-    public boolean isOn() {
-        return isOn;
-    }
-
-    public void setOn(boolean on) {
-        this.isOn = on;
-    }
-
     public Alarm(int hour, int minute, String name, int id, boolean is24HourFormat){
 
         this.hour = hour;
@@ -83,6 +75,16 @@ public class Alarm extends BaseObservable implements Serializable {
             }
         }
         return time;
+    }
+
+    @Bindable
+    public boolean getIsOn() {
+        return isOn;
+    }
+
+    public void setIsOn(boolean isOn) {
+        this.isOn = isOn;
+        notifyPropertyChanged(BR.isOn);
     }
 
     public int getHour() {
