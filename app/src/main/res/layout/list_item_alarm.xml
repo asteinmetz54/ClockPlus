@@ -1,87 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_margin="10dp"
-    app:cardBackgroundColor="@color/colorDayOff"
-    app:cardElevation="8dp">
+    xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
 
-    <android.support.constraint.ConstraintLayout
+        <variable
+            name="alarm"
+            type="com.mycompany.clockplus.Alarm" />
+    </data>
+
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
-        android:layout_height="110dp"
-        android:background="@drawable/ripple"
-        android:descendantFocusability="blocksDescendants"
-        android:orientation="horizontal"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="25dp">
-
-        <ImageView
-            android:id="@+id/listIconAlarmNameLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:layout_marginStart="7dp"
-            android:paddingLeft="8dp"
-            android:src="@drawable/ic_label_outline_white_18dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            tools:layout_constraintBottom_creator="1"
-            tools:layout_constraintLeft_creator="1" />
-
-        <TextView
-            android:id="@+id/listAlarmName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="8dp"
-            android:text="Alarm Name"
-            android:textAlignment="textStart"
-            android:textColor="@color/colorTextSecondary"
-            android:textSize="18sp"
-            app:layout_constraintLeft_toRightOf="@+id/listIconAlarmNameLabel"
-            app:layout_constraintTop_toTopOf="@+id/listIconAlarmNameLabel"
-            tools:layout_constraintLeft_creator="1"
-            tools:layout_constraintTop_creator="1" />
-
-        <TextView
-            android:id="@+id/listAlarmTime"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:layout_marginTop="9dp"
-            android:text="12:00pm"
-            android:textColor="@color/colorText"
-            android:textSize="48sp"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_constraintLeft_creator="1"
-            tools:layout_constraintTop_creator="1" />
-
-        <ImageView
-            android:id="@+id/listAlarmStatusIcon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="15dp"
-            android:layout_marginEnd="16dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:srcCompat="@drawable/ic_alarm_on_white_24dp"
-            tools:layout_constraintBottom_creator="1"
-            tools:layout_constraintRight_creator="1" />
-
-        <Switch
-            android:id="@+id/listAlarmSwitch"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="16dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:layout_constraintRight_creator="1"
-            tools:layout_constraintTop_creator="1" />
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        app:cardBackgroundColor="@color/colorDayOff"
+        app:cardElevation="8dp">
 
 
-    </android.support.constraint.ConstraintLayout>
-</android.support.v7.widget.CardView>
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="110dp"
+            android:background="@drawable/ripple"
+            android:descendantFocusability="blocksDescendants"
+            android:orientation="horizontal"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="25dp">
+
+            <ImageView
+                android:id="@+id/listIconAlarmNameLabel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginStart="7dp"
+                android:paddingLeft="8dp"
+                android:src="@drawable/ic_label_outline_white_18dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                tools:layout_constraintBottom_creator="1"
+                tools:layout_constraintLeft_creator="1" />
+
+            <TextView
+                android:id="@+id/listAlarmName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:paddingLeft="8dp"
+                android:text="@{alarm.name}"
+                android:textAlignment="textStart"
+                android:textColor="@color/colorTextSecondary"
+                android:textSize="18sp"
+                app:layout_constraintLeft_toRightOf="@+id/listIconAlarmNameLabel"
+                app:layout_constraintTop_toTopOf="@+id/listIconAlarmNameLabel"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+
+            <TextView
+                android:id="@+id/listAlarmTime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="9dp"
+                android:text="@{alarm.time}"
+                android:textColor="@color/colorText"
+                android:textSize="48sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_constraintLeft_creator="1"
+                tools:layout_constraintTop_creator="1" />
+
+            <ImageView
+                android:id="@+id/listAlarmStatusIcon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="15dp"
+                android:layout_marginEnd="16dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:srcCompat="@drawable/ic_alarm_on_white_24dp"
+                tools:layout_constraintBottom_creator="1"
+                tools:layout_constraintRight_creator="1" />
+
+            <Switch
+                android:id="@+id/listAlarmSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="16dp"
+                android:layout_marginTop="16dp"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:layout_constraintRight_creator="1"
+                tools:layout_constraintTop_creator="1" />
+
+
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
+</layout>

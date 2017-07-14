@@ -7,13 +7,16 @@
 
 package com.mycompany.clockplus;
 
+import android.databinding.BaseObservable;
+import android.databinding.Bindable;
+
 import java.io.Serializable;
 
 /**
  * @author Andrew Steinmetz   mailto: arsteinm@asu.edu
  * @version April 28
  */
-public class Alarm implements Serializable{
+public class Alarm extends BaseObservable implements Serializable {
     private static final long serialVersionUID = 1L;
     private String name;
     private  int hour, minute;
@@ -42,6 +45,7 @@ public class Alarm implements Serializable{
         isOn = true;
     }
 
+    @Bindable
     public String getTime(){
         String time;
         if(is24HourFormat){
@@ -89,6 +93,7 @@ public class Alarm implements Serializable{
         return minute;
     }
 
+    @Bindable
     public String getName() {
         return name;
     }
@@ -99,14 +104,17 @@ public class Alarm implements Serializable{
 
     public void setHour(int hour) {
         this.hour = hour;
+        notifyPropertyChanged(BR.time);
     }
 
     public void setMinute(int minute) {
         this.minute = minute;
+        notifyPropertyChanged(BR.time);
     }
 
     public void setName(String name) {
         this.name = name;
+        notifyPropertyChanged(BR.name);
     }
 
     public void setId(int id) {
