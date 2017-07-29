@@ -34,6 +34,7 @@
             fab:fab_colorNormal="@color/colorAccent"
             fab:fab_colorPressed="@color/colorFabPressed"
             fab:fab_size="mini"
+            android:onClick="addCalendarAlarm"
             fab:fab_title="Calendar Alarm" />
 
         <com.getbase.floatingactionbutton.FloatingActionButton

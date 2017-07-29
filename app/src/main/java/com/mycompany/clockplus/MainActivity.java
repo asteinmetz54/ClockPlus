@@ -1,6 +1,7 @@
 package com.mycompany.clockplus;
 
 import android.Manifest;
+import android.accounts.AccountManager;
 import android.annotation.TargetApi;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
@@ -17,6 +18,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.TimePicker;
 
+import com.google.android.gms.common.AccountPicker;
 import com.mycompany.clockplus.database.AlarmContract;
 import com.mycompany.clockplus.database.AlarmReaderDbHelper;
 
@@ -29,6 +31,8 @@ public class MainActivity extends FragmentActivity {
 
     //request codes
     static final private int MY_PERMISSIONS_REQUEST_READ_CALENDAR = 1;
+    static final private int PICK_ACCOUNT = 2;
+
 
     private String accountName = null;
     private AlarmReaderDbHelper mDbHelper;
@@ -82,7 +86,6 @@ public class MainActivity extends FragmentActivity {
         } else if (hasReadCalandarPermission == PackageManager.PERMISSION_GRANTED) {
             Intent intent = new Intent(this, AddCalendarAlarm.class);
             startActivity(intent);
-
         }
     }
     
@@ -137,6 +140,7 @@ public class MainActivity extends FragmentActivity {
     public void jumpToWorldClock(View view) {
         viewPager.setCurrentItem(3, true);
     }
+
 
 
 
