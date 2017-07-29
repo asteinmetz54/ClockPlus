@@ -6,6 +6,9 @@
     <string name="calendar_alarm">Create New Calendar Alarm</string>
     <string name="world_clock">I\'m a world clock</string>
     <string name="timer">I\'m a timer</string>
+    <string name="disabled">Disabled</string>
+    <string name="new_alarm_short">New Alarm</string>
+    <string name="new_alarm_long">New Alarm</string>
     <string name="stop_watch">I\'m a stopwatch</string>
     <string name="alarmText">Wake up!</string>
     <string name="alarmTime">Alarm Time</string>

@@ -1,0 +1,17 @@
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:enabled="true"
+        android:icon="@drawable/add"
+        android:shortcutDisabledMessage="@string/disabled"
+        android:shortcutId="new_alarm"
+        android:shortcutLongLabel="@string/new_alarm_long"
+        android:shortcutShortLabel="@string/new_alarm_short">
+        <intent
+            android:action="android.intent.action.ADD_ALARM"
+            android:targetClass="com.mycompany.clockplus.MainActivity"
+            android:targetPackage="com.mycompany.clockplus" />
+        <!-- If your shortcut is associated with multiple intents, include them
+             here. The last intent in the list determines what the user sees when
+             they launch this shortcut. -->
+    </shortcut><!-- Specify more shortcuts here. -->
+</shortcuts>
