@@ -4,6 +4,7 @@ package com.mycompany.clockplus;
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -12,11 +13,14 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.mycompany.clockplus.database.AlarmContract;
 import com.mycompany.clockplus.database.AlarmReaderDbHelper;
@@ -77,19 +81,29 @@ public class AlarmFragment extends Fragment{
                     .getSerializable(KEY_LAYOUT_MANAGER);
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
-//        recyclerView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-//                Alarm alarm = (Alarm) alarmList.get(position);
-//
-//                Intent intent = new Intent(getContext(), EditAlarm.class);
-//                intent.putExtra("position", position );
-//                intent.putExtra("alarm", alarm);
-//                startActivityForResult(intent,EDIT_ALARM);
-//            }
-//        });
+
         alarmAdapter = new AlarmAdapter(alarmList);
         recyclerView.setAdapter(alarmAdapter);
+
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(getActivity(),
+                recyclerView, new ClickListener() {
+            @Override
+            public void onClick(View view, final int position) {
+                //Values are passing to activity & to fragment as well
+                Alarm alarm = (Alarm) alarmList.get(position);
+
+                Intent intent = new Intent(getContext(), EditAlarm.class);
+                intent.putExtra("position", position );
+                intent.putExtra("alarm", alarm);
+                startActivityForResult(intent,EDIT_ALARM);
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                Toast.makeText(getActivity(), "Long press on position :"+position,
+                        Toast.LENGTH_LONG).show();
+            }
+        }));
 
         FloatingActionButton newAlarmButton = (FloatingActionButton) rootView.findViewById(R.id.alarm_button);
         newAlarmButton.setOnClickListener(new View.OnClickListener() {
@@ -261,4 +275,53 @@ public class AlarmFragment extends Fragment{
     }
 
 
+    public static interface ClickListener{
+        public void onClick(View view,int position);
+        public void onLongClick(View view,int position);
+    }
+
+    class RecyclerTouchListener implements RecyclerView.OnItemTouchListener{
+
+        private ClickListener clicklistener;
+        private GestureDetector gestureDetector;
+
+        public RecyclerTouchListener(Context context, final RecyclerView recycleView, final ClickListener clicklistener){
+
+            this.clicklistener=clicklistener;
+            gestureDetector=new GestureDetector(context,new GestureDetector.SimpleOnGestureListener(){
+                @Override
+                public boolean onSingleTapUp(MotionEvent e) {
+                    return true;
+                }
+
+                @Override
+                public void onLongPress(MotionEvent e) {
+                    View child=recycleView.findChildViewUnder(e.getX(),e.getY());
+                    if(child!=null && clicklistener!=null){
+                        clicklistener.onLongClick(child,recycleView.getChildAdapterPosition(child));
+                    }
+                }
+            });
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+            View child=rv.findChildViewUnder(e.getX(),e.getY());
+            if(child!=null && clicklistener!=null && gestureDetector.onTouchEvent(e)){
+                clicklistener.onClick(child,rv.getChildAdapterPosition(child));
+            }
+
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+        }
+    }
 }

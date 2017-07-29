@@ -188,13 +188,7 @@ public class AddCalendarAlarm extends AppCompatActivity implements LoaderManager
         mAdapter.swapCursor(null);
     }
 
-    protected void onActivityResult(final int requestCode, final int resultCode,
-                                    final Intent data) {
-        if (requestCode == PICK_ACCOUNT && resultCode == RESULT_OK) {
-            accountName = data.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
-            getSupportLoaderManager().restartLoader(CALENDAR_LOADER, null, this);
-        }
-    }
+        
 
 }
 
